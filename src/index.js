@@ -1,4 +1,6 @@
 import 'readable-stream/lib/_stream_duplex';
+import 'dom-shims';
+
 import { FastClick } from 'fastclick';
 import http from 'http';
 
