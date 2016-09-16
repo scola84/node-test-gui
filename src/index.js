@@ -38,7 +38,13 @@ function logRequest(request, response, next) {
   next();
 }
 
-window.onload = () => {
+applicationCache.addEventListener('updateready', () => {
+  if (applicationCache.status === applicationCache.UPDATEREADY) {
+    window.location.reload();
+  }
+});
+
+window.addEventListener('load', () => {
   FastClick.attach(document.body);
 
   const appModel = objectModel('scola.test.app');
@@ -131,10 +137,4 @@ window.onload = () => {
 
     socket.open();
   });
-
-  applicationCache.addEventListener('updateready', () => {
-    if (applicationCache.status === applicationCache.UPDATEREADY) {
-      window.location.reload();
-    }
-  });
-};
+});
