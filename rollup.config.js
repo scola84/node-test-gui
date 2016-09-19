@@ -10,6 +10,7 @@ export default {
   format: 'umd',
   globals: {
     'd3-selection': 'd3',
+    'd3-transition': 'd3',
     'moment': 'moment',
     'moment-timezone': 'moment'
   },
@@ -21,6 +22,7 @@ export default {
       browser: true,
       skip: [
         'd3-selection',
+        'd3-transition',
         'moment',
         'moment-timezone'
       ]

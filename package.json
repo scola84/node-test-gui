@@ -20,11 +20,14 @@
     "@scola/i18n-data": "^1.0.0",
     "@scola/test": "github:scola84/node-test",
     "@scola/websocket": "^2.0.0",
+    "d3-selection-multi": "^1.0.0",
     "dom-shims": "^0.1.4",
     "express": "^4.14.0",
-    "fastclick": "^1.0.6"
+    "fastclick": "^1.0.6",
+    "helmet": "^2.2.0"
   },
   "devDependencies": {
+    "async": "^2.0.1",
     "livereload": "^0.5.0",
     "rollup": "^0.35.9",
     "rollup-plugin-buble": "^0.13.0",

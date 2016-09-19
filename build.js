@@ -1,42 +1,46 @@
 const fs = require('fs');
+const async = require('async');
 
-fs.readFile('./src/index.appcache', (readError, data) => {
-  if (readError) {
-    console.log(readError);
+const version = require('./package.json').version;
+const srcDir = './src/';
+const distDir = './dist/';
+
+const modifiers = {
+  'index.appcache': (data) => {
+    return data.toString()
+      .replace(/\{date\}/g, Date.now())
+      .replace(/\{version\}/g, version);
+  },
+  'index.js': () => false
+};
+
+fs.readdir(srcDir, (dirError, files) => {
+  if (dirError) {
+    console.log(dirError);
     return;
   }
 
-  data = data.toString().replace('{date}', Date.now());
+  async.each(files, (file, callback) => {
+    fs.readFile(srcDir + file, (readError, data) => {
+      if (readError) {
+        callback(readError);
+        return;
+      }
 
-  fs.writeFile('./dist/index.appcache', data, (writeError) => {
-    if (writeError) {
-      console.log(writeError);
-    }
-  });
-});
+      if (modifiers[file]) {
+        data = modifiers[file](data);
+      }
 
-fs.readFile('./src/index.css', (readError, data) => {
-  if (readError) {
-    console.log(readError);
-    return;
-  }
+      if (data === false) {
+        callback();
+        return;
+      }
 
-  fs.writeFile('./dist/index.css', data, (writeError) => {
-    if (writeError) {
-      console.log(writeError);
-    }
-  });
-});
-
-fs.readFile('./src/index.html', (readError, data) => {
-  if (readError) {
-    console.log(readError);
-    return;
-  }
-
-  fs.writeFile('./dist/index.html', data, (writeError) => {
-    if (writeError) {
-      console.log(writeError);
+      fs.writeFile(distDir + file, data, callback);
+    });
+  }, (eachError) => {
+    if (eachError) {
+      console.log(eachError);
     }
   });
 });

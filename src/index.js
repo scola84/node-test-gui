@@ -1,8 +1,9 @@
 import 'readable-stream/lib/_stream_duplex';
+import 'd3-selection-multi';
 import 'dom-shims';
 
 import { FastClick } from 'fastclick';
-import http from 'http';
+import http from 'https';
 
 import { codec } from '@scola/api-codec-json';
 import { WebSocket } from '@scola/websocket';
@@ -23,7 +24,7 @@ import { objectModel } from '@scola/d3-model';
 import { data as stringData } from '@scola/i18n-data';
 
 import { client as iClient } from '@scola/test';
-import config from './config';
+import config from '../conf/index';
 
 function parseAddress(connection) {
   return connection && connection.address().address || '';
@@ -47,12 +48,13 @@ applicationCache.addEventListener('updateready', () => {
 window.addEventListener('load', () => {
   FastClick.attach(document.body);
 
+  const hostname = window.location.hostname;
   const appModel = objectModel('scola.test.app');
 
   const apiRouter = new Router();
   const guiRouter = routerFactory();
 
-  const socket = new WebSocket('ws://' + config.api.address);
+  const socket = new WebSocket('wss://' + hostname + ':' + config.api.port);
 
   const cache = new MapCache();
 
@@ -64,7 +66,7 @@ window.addEventListener('load', () => {
   const httpConnection = new HttpConnection()
     .http(http)
     .codec(codec)
-    .host(config.api.address);
+    .host(hostname + ':' + config.api.port);
 
   const factory = new ClientFactory()
     .cache(cache)
@@ -73,6 +75,18 @@ window.addEventListener('load', () => {
   const i18n = i18nFactory()
     .locale('nl_NL')
     .timezone('Europe/Amsterdam');
+
+  i18n.string().data({
+    nl_NL: {
+      scola: {
+        error: {
+          invalid_socket: 'Geen verbinding',
+          invalid_request: 'Geen verbinding',
+          invalid_response: 'Geen verbinding'
+        }
+      }
+    }
+  });
 
   apiRouter.filter(logRequest);
 
@@ -115,12 +129,6 @@ window.addEventListener('load', () => {
 
   guiRouter.target('menu').route('scola.test.list').default();
   guiRouter.target('main').route('scola.test.update').default();
-
-  if (navigator.onLine === true) {
-    wsConnection.once('open', () => {
-      guiRouter.popState();
-    });
-  }
 
   guiRouter.popState();
 
