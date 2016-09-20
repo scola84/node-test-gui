@@ -130,7 +130,13 @@ window.addEventListener('load', () => {
   guiRouter.target('menu').route('scola.test.list').default();
   guiRouter.target('main').route('scola.test.update').default();
 
-  guiRouter.popState();
+  if (window.navigator.onLine === true) {
+    wsConnection.once('open', () => {
+      guiRouter.popState();
+    });
+  } else {
+    guiRouter.popState();
+  }
 
   window.addEventListener('offline', () => {
     appModel
