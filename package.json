@@ -22,7 +22,7 @@
     "@scola/websocket": "^2.0.0",
     "d3-selection-multi": "^1.0.0",
     "dom-shims": "^0.1.4",
-    "fastclick": "^1.0.6",
+    "fastclick": "^1.0.6"
   },
   "devDependencies": {
     "async": "^2.0.1",
