@@ -3,7 +3,7 @@ import 'd3-selection-multi';
 import 'dom-shims';
 
 import { FastClick } from 'fastclick';
-import http from 'https';
+import { request } from 'https';
 
 import { codec } from '@scola/api-codec-json';
 import { WebSocket } from '@scola/websocket';
@@ -64,9 +64,10 @@ window.addEventListener('load', () => {
     .codec(codec);
 
   const httpConnection = new HttpConnection()
-    .http(http)
+    .http({ request })
     .codec(codec)
-    .host(hostname + ':' + config.api.port);
+    .host(hostname)
+    .port(config.api.port);
 
   const factory = new ClientFactory()
     .cache(cache)

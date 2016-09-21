@@ -7,7 +7,7 @@
   "main": "index.js",
   "dependencies": {
     "@scola/api-codec-json": "^1.0.0",
-    "@scola/api-http": "^1.0.0",
+    "@scola/api-http": "^1.1.0",
     "@scola/api-model": "^1.0.1",
     "@scola/api-router": "^1.0.0",
     "@scola/api-ws": "^1.0.0",

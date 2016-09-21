@@ -11,6 +11,7 @@ app.use(helmet.contentSecurityPolicy({
       'https://cdnjs.cloudflare.com'
     ],
     connectSrc: [
+      'https://*.mijnherman.nl:9000',
       'https://*.mijnherman.nl:8000',
       'wss://*.mijnherman.nl:8000'
     ],
