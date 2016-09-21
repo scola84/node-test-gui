@@ -22,28 +22,19 @@
     "@scola/websocket": "^2.0.0",
     "d3-selection-multi": "^1.0.0",
     "dom-shims": "^0.1.4",
-    "express": "^4.14.0",
     "fastclick": "^1.0.6",
-    "helmet": "^2.2.0"
   },
   "devDependencies": {
     "async": "^2.0.1",
-    "livereload": "^0.5.0",
     "rollup": "^0.36.0",
     "rollup-plugin-buble": "^0.14.0",
     "rollup-plugin-commonjs": "^5.0.4",
     "rollup-plugin-inject": "^2.0.0",
     "rollup-plugin-node-builtins": "^1.1.0",
     "rollup-plugin-node-globals": "^1.0.8",
-    "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-watch": "^2.5.0",
-    "watch": "^0.19.2"
+    "rollup-plugin-node-resolve": "^2.0.0"
   },
   "scripts": {
-    "build": "node build.js && rollup -c",
-    "serve": "pm2 start server/gui.js --name \"gui\"",
-    "serve:reload": "pm2 start server/reload.js --name \"reload\"",
-    "serve:watch": "npm run serve && npm run serve:reload && npm run watch",
-    "watch": "node_modules/.bin/watch \"npm run build\" src/ node_modules/@scola/ -d"
+    "build": "node build.js && rollup -c"
   }
 }

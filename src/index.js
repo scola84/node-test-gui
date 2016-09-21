@@ -1,4 +1,3 @@
-import 'readable-stream/lib/_stream_duplex';
 import 'd3-selection-multi';
 import 'dom-shims';
 
