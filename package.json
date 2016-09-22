@@ -7,10 +7,10 @@
   "main": "index.js",
   "dependencies": {
     "@scola/api-codec-json": "^1.0.0",
-    "@scola/api-http": "^1.1.0",
+    "@scola/api-http": "^1.1.1",
     "@scola/api-model": "^1.0.2",
     "@scola/api-router": "^1.0.0",
-    "@scola/api-ws": "^1.0.0",
+    "@scola/api-ws": "^1.0.1",
     "@scola/cache-map": "^3.0.0",
     "@scola/d3-app": "^1.0.0",
     "@scola/d3-i18n": "^1.0.1",
@@ -32,7 +32,7 @@
     "rollup-plugin-inject": "^2.0.0",
     "rollup-plugin-json": "^2.0.2",
     "rollup-plugin-node-builtins": "^1.1.0",
-    "rollup-plugin-node-globals": "^1.0.8",
+    "rollup-plugin-node-globals": "^1.0.9",
     "rollup-plugin-node-resolve": "^2.0.0"
   },
   "scripts": {
