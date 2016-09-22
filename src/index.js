@@ -23,7 +23,11 @@ import { objectModel } from '@scola/d3-model';
 import { data as stringData } from '@scola/i18n-data';
 
 import { client as iClient } from '@scola/test';
-import config from '../config';
+
+import { config } from '../config';
+import { version } from '../package.json';
+
+config.version = version;
 
 function parseAddress(connection) {
   return connection && connection.address().address || '';

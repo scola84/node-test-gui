@@ -1,8 +1,9 @@
-import commonjs from 'rollup-plugin-commonjs';
-import resolve from 'rollup-plugin-node-resolve';
-import globals from 'rollup-plugin-node-globals';
-import builtins from 'rollup-plugin-node-builtins';
 import buble from 'rollup-plugin-buble';
+import builtins from 'rollup-plugin-node-builtins';
+import commonjs from 'rollup-plugin-commonjs';
+import globals from 'rollup-plugin-node-globals';
+import json from 'rollup-plugin-json';
+import resolve from 'rollup-plugin-node-resolve';
 
 export default {
   entry: './src/index.js',
@@ -31,6 +32,7 @@ export default {
       ignoreGlobal: true,
       exclude: ['**/lodash-es/**']
     }),
+    json(),
     globals(),
     buble()
   ]

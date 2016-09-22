@@ -8,7 +8,7 @@
   "dependencies": {
     "@scola/api-codec-json": "^1.0.0",
     "@scola/api-http": "^1.1.0",
-    "@scola/api-model": "^1.0.1",
+    "@scola/api-model": "^1.0.2",
     "@scola/api-router": "^1.0.0",
     "@scola/api-ws": "^1.0.0",
     "@scola/cache-map": "^3.0.0",
@@ -30,6 +30,7 @@
     "rollup-plugin-buble": "^0.14.0",
     "rollup-plugin-commonjs": "^5.0.4",
     "rollup-plugin-inject": "^2.0.0",
+    "rollup-plugin-json": "^2.0.2",
     "rollup-plugin-node-builtins": "^1.1.0",
     "rollup-plugin-node-globals": "^1.0.8",
     "rollup-plugin-node-resolve": "^2.0.0"
