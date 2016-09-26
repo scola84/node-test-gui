@@ -8,6 +8,7 @@
   "dependencies": {
     "@scola/api-codec-json": "^1.0.0",
     "@scola/api-http": "^1.1.1",
+    "@scola/api-log": "^1.0.0",
     "@scola/api-model": "^1.0.2",
     "@scola/api-router": "^1.0.0",
     "@scola/api-ws": "^2.0.0",
