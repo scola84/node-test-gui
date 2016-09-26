@@ -5,10 +5,15 @@ import { FastClick } from 'fastclick';
 import { request } from 'https';
 
 import { codec } from '@scola/api-codec-json';
-import { WebSocket } from '@scola/websocket';
 
 import { Connection as HttpConnection } from '@scola/api-http';
 import { Connection as WsConnection } from '@scola/api-ws';
+
+import {
+  ConnectionHandler,
+  RouterHandler,
+  ConsoleLogger
+} from '@scola/api-log';
 
 import { Router } from '@scola/api-router';
 import { ClientFactory, clientRoutes } from '@scola/api-model';
@@ -21,26 +26,13 @@ import { app as appFactory } from '@scola/d3-app';
 import { objectModel } from '@scola/d3-model';
 
 import { data as stringData } from '@scola/i18n-data';
-
+import { Reconnector } from '@scola/websocket';
 import { client as iClient } from '@scola/test';
 
-import { config } from '../config';
+import { config } from '../conf/index';
 import { version } from '../package.json';
 
 config.version = version;
-
-function parseAddress(connection) {
-  return connection && connection.address().address || '';
-}
-
-function logRequest(request, response, next) {
-  const date = '[' + new Date().toISOString() + ']';
-  const address = parseAddress(request.connection());
-  const id = request.method() + ' ' + request.url();
-
-  console.log(date + ' ' + address + ' ' + id);
-  next();
-}
 
 applicationCache.addEventListener('updateready', () => {
   if (applicationCache.status === applicationCache.UPDATEREADY) {
@@ -57,12 +49,14 @@ window.addEventListener('load', () => {
   const apiRouter = new Router();
   const guiRouter = routerFactory();
 
-  const socket = new WebSocket('wss://' + hostname + ':' + config.api.port);
-
   const cache = new MapCache();
 
+  const reconnector = new Reconnector()
+    .url('wss://' + hostname + ':' + config.api.port)
+    .class(WebSocket);
+
   const wsConnection = new WsConnection()
-    .socket(socket)
+    .auto(false)
     .router(apiRouter)
     .codec(codec);
 
@@ -92,7 +86,28 @@ window.addEventListener('load', () => {
     }
   });
 
-  apiRouter.filter(logRequest);
+  const consoleLogger = new ConsoleLogger();
+
+  new ConnectionHandler()
+    .id(config.log.id)
+    .name(config.log.http.name)
+    .source(httpConnection)
+    .target(consoleLogger)
+    .events(config.log.http.events);
+
+  new ConnectionHandler()
+    .id(config.log.id)
+    .name(config.log.ws.name)
+    .source(wsConnection)
+    .target(consoleLogger)
+    .events(config.log.ws.events);
+
+  new RouterHandler()
+    .id(config.log.id)
+    .name(config.log.router.name)
+    .source(apiRouter)
+    .target(consoleLogger)
+    .events(config.log.router.events);
 
   stringData(i18n);
   clientRoutes(apiRouter, factory);
@@ -134,13 +149,11 @@ window.addEventListener('load', () => {
   guiRouter.target('menu').route('scola.test.list').default();
   guiRouter.target('main').route('scola.test.update').default();
 
-  if (window.navigator.onLine === true) {
-    wsConnection.once('open', () => {
-      guiRouter.popState();
-    });
-  } else {
-    guiRouter.popState();
-  }
+  reconnector.on('open', (event) => {
+    wsConnection
+      .socket(event.socket)
+      .open(event);
+  });
 
   window.addEventListener('offline', () => {
     appModel
@@ -153,6 +166,16 @@ window.addEventListener('load', () => {
       .set('status', 'online')
       .commit();
 
-    socket.open();
+    reconnector.open();
   });
+
+  if (window.navigator.onLine === true) {
+    wsConnection.once('open', () => {
+      guiRouter.popState();
+    });
+
+    reconnector.open();
+  } else {
+    guiRouter.popState();
+  }
 });
