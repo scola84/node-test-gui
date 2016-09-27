@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "async": "^2.0.1",
+    "clean-css": "^3.4.20",
     "rollup": "^0.36.0",
     "rollup-plugin-buble": "^0.14.0",
     "rollup-plugin-commonjs": "^5.0.4",
@@ -34,12 +35,13 @@
     "rollup-plugin-json": "^2.0.2",
     "rollup-plugin-node-builtins": "^1.2.0",
     "rollup-plugin-node-globals": "^1.0.9",
-    "rollup-plugin-node-resolve": "^2.0.0"
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "uglifyjs": "^2.4.10"
   },
   "scripts": {
     "build": "rollup -c && node build.js",
     "min": "npm run min:js && npm run min:css",
     "min:js": "uglifyjs dist/index.min.js -c -m -o dist/index.min.js",
-    "min:css": "cleancss src/index.css -o dist/index.min.css"
+    "min:css": "cleancss --skip-rebase src/index.css -o dist/index.min.css"
   }
 }
