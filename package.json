@@ -7,16 +7,16 @@
   "main": "index.js",
   "dependencies": {
     "@scola/api-codec-json": "^1.0.0",
-    "@scola/api-http": "^1.2.0",
+    "@scola/api-http": "^2.0.0",
     "@scola/api-log": "^1.0.1",
     "@scola/api-model": "^1.0.3",
     "@scola/api-router": "^1.0.0",
-    "@scola/api-ws": "^2.0.1",
+    "@scola/api-ws": "^3.0.0",
     "@scola/cache-map": "^3.0.0",
     "@scola/d3-app": "^1.0.1",
     "@scola/d3-i18n": "^1.0.1",
     "@scola/d3-menu": "^1.0.2",
-    "@scola/d3-model": "^1.0.0",
+    "@scola/d3-model": "^1.1.1",
     "@scola/d3-router": "^1.0.0",
     "@scola/i18n-data": "^1.0.0",
     "@scola/test": "github:scola84/node-test",
@@ -37,6 +37,9 @@
     "rollup-plugin-node-resolve": "^2.0.0"
   },
   "scripts": {
-    "build": "node build.js && rollup -c"
+    "build": "rollup -c && node build.js",
+    "min": "npm run min:js && npm run min:css",
+    "min:js": "uglifyjs dist/index.min.js -c -m -o dist/index.min.js",
+    "min:css": "cleancss src/index.css -o dist/index.min.css"
   }
 }

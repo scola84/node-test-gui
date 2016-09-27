@@ -5,7 +5,7 @@ import { FastClick } from 'fastclick';
 import { request } from 'https';
 
 import { codec } from '@scola/api-codec-json';
-import { Connection as HttpConnection } from '@scola/api-http';
+import { HttpConnection } from '@scola/api-http';
 
 import {
   ConnectionHandler,
@@ -19,7 +19,7 @@ import {
 } from '@scola/api-model';
 
 import { Router } from '@scola/api-router';
-import { Connection as WsConnection } from '@scola/api-ws';
+import { WsConnection } from '@scola/api-ws';
 import { MapCache } from '@scola/cache-map';
 
 import { i18n as i18nFactory } from '@scola/d3-i18n';

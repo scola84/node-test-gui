@@ -6,12 +6,25 @@ const srcDir = './src/';
 const distDir = './dist/';
 
 const modifiers = {
-  'index.appcache': (data) => {
-    return data.toString()
-      .replace(/\{date\}/g, Date.now())
-      .replace(/\{version\}/g, version);
+  'index.appcache': (file, data) => {
+    return {
+      data: data.toString()
+        .replace(/\{date\}/g, Date.now())
+        .replace(/\{version\}/g, version),
+      file
+    };
   },
-  'index.js': () => false
+  'index.css': (file, data) => {
+    return {
+      file: 'index.min.css',
+      data
+    };
+  },
+  'index.js': () => {
+    return {
+      file: false
+    };
+  }
 };
 
 fs.readdir(srcDir, (dirError, files) => {
@@ -27,16 +40,21 @@ fs.readdir(srcDir, (dirError, files) => {
         return;
       }
 
+      let result = {
+        file,
+        data
+      };
+
       if (modifiers[file]) {
-        data = modifiers[file](data);
+        result = modifiers[file](file, data);
       }
 
-      if (data === false) {
+      if (result.file === false) {
         callback();
         return;
       }
 
-      fs.writeFile(distDir + file, data, callback);
+      fs.writeFile(distDir + result.file, result.data, callback);
     });
   }, (eachError) => {
     if (eachError) {
