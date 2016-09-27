@@ -6,8 +6,8 @@ import json from 'rollup-plugin-json';
 import resolve from 'rollup-plugin-node-resolve';
 
 export default {
-  entry: './src/index.js',
   dest: './dist/index.js',
+  entry: './src/index.js',
   format: 'umd',
   globals: {
     'd3-selection': 'd3',
@@ -21,6 +21,7 @@ export default {
       jsnext: true,
       main: true,
       browser: true,
+      preferBuiltins: true,
       skip: [
         'd3-selection',
         'd3-transition',
@@ -29,8 +30,7 @@ export default {
       ]
     }),
     commonjs({
-      ignoreGlobal: true,
-      exclude: ['**/lodash-es/**']
+      ignoreGlobal: true
     }),
     json(),
     globals(),

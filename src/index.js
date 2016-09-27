@@ -5,9 +5,7 @@ import { FastClick } from 'fastclick';
 import { request } from 'https';
 
 import { codec } from '@scola/api-codec-json';
-
 import { Connection as HttpConnection } from '@scola/api-http';
-import { Connection as WsConnection } from '@scola/api-ws';
 
 import {
   ConnectionHandler,
@@ -15,8 +13,13 @@ import {
   ConsoleLogger
 } from '@scola/api-log';
 
+import {
+  ClientFactory,
+  clientRoutes
+} from '@scola/api-model';
+
 import { Router } from '@scola/api-router';
-import { ClientFactory, clientRoutes } from '@scola/api-model';
+import { Connection as WsConnection } from '@scola/api-ws';
 import { MapCache } from '@scola/cache-map';
 
 import { i18n as i18nFactory } from '@scola/d3-i18n';
@@ -27,12 +30,10 @@ import { objectModel } from '@scola/d3-model';
 
 import { data as stringData } from '@scola/i18n-data';
 import { Reconnector } from '@scola/websocket';
-import { client as iClient } from '@scola/test';
 
+import { client as iClient } from '@scola/test';
 import { config } from '../conf/index';
 import { version } from '../package.json';
-
-config.version = version;
 
 applicationCache.addEventListener('updateready', () => {
   if (applicationCache.status === applicationCache.UPDATEREADY) {
@@ -45,6 +46,12 @@ window.addEventListener('load', () => {
 
   const hostname = window.location.hostname;
   const appModel = objectModel('scola.test.app');
+
+  objectModel('scola.test.config')
+    .values(config)
+    .set('version', version)
+    .commit()
+    .lock();
 
   const apiRouter = new Router();
   const guiRouter = routerFactory();
